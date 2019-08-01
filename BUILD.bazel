@@ -1,0 +1,28 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix slow_gazelle
+gazelle(name = "gazelle")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "slow_gazelle",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@com_github_envoyproxy_go_control_plane//:go_default_library",
+        "@com_github_fclairamb_ftpserver//:go_default_library",
+        "@com_github_gcla_gowid//:go_default_library",
+        "@com_github_gogo_googleapis//:go_default_library",
+        "@com_github_gogo_protobuf//:go_default_library",
+        "@com_github_golang_mock//:go_default_library",
+        "@com_github_golang_protobuf//:go_default_library",
+        "@com_github_google_go_cmp//:go_default_library",
+    ],
+)
+
+go_binary(
+    name = "slow_gazelle",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
